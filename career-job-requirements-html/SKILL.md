@@ -1,6 +1,9 @@
 ---
 name: career-job-requirements-html
 description: Turn a job posting (URL, pasted text, or file) into an interactive HTML page listing what the posting requires of the candidate, in its own wording, with a notes box under every point. Use when the user shares a job posting and wants its requirements laid out, quoted verbatim, to annotate how they match.
+metadata:
+  author: Kenneth Acosta, PhD
+  version: "1.00"
 ---
 
 # Job requirements notes page
