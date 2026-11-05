@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Requirements Notes</title>
+<style>
+  :root { --bg:#fbfaf7; --surface:#fff; --text:#1d1d1b; --muted:#6b6a66; --line:#e4e1da; --accent:#b4232a; --accent-soft:#fbeceb; --chip:#f1efea; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#161615; --surface:#1f1f1d; --text:#ecebe7; --muted:#a09e98; --line:#34332f; --accent:#ef6b6f; --accent-soft:#3a2021; --chip:#2a2927; } }
+  :root[data-theme="dark"] { --bg:#161615; --surface:#1f1f1d; --text:#ecebe7; --muted:#a09e98; --line:#34332f; --accent:#ef6b6f; --accent-soft:#3a2021; --chip:#2a2927; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 Georgia,"Times New Roman",serif; }
+  main { max-width:760px; margin:0 auto; padding:40px 16px 64px; }
+  .eyebrow { font:600 12px/1 system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  h1 { font-size:30px; line-height:1.2; margin:10px 0 8px; font-weight:600; }
+  .meta { font:14px/1.5 system-ui,sans-serif; color:var(--muted); margin:0 0 28px; }
+  .summary { border-left:3px solid var(--accent); padding:4px 0 4px 16px; margin:0 0 28px; font-style:italic; }
+  section { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px 24px; margin-bottom:20px; }
+  h2 { font:600 13px/1 system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; margin:0 0 16px; display:flex; align-items:center; gap:10px; }
+  h2 .count { background:var(--chip); color:var(--muted); border-radius:999px; padding:4px 9px; font-size:12px; letter-spacing:0; }
+  section.required h2 { color:var(--accent); }
+  section p.pt { margin:0 0 4px; } section p.pt ~ p.pt { margin-top:12px; }
+  ol, ul { margin:0; padding-left:22px; } li { margin:0 0 10px; } li:last-child { margin-bottom:0; }
+  ul.sub { margin-top:10px; padding-left:4px; list-style:none; }
+  ul.sub li { background:var(--accent-soft); border-radius:6px; padding:8px 12px; margin-bottom:6px; }
+  textarea.notes { display:block; width:100%; margin:8px 0 4px; min-height:52px; resize:vertical; font:14px/1.45 system-ui,sans-serif; color:var(--text); background:var(--bg); border:1px dashed var(--line); border-radius:6px; padding:8px 10px; }
+  textarea.notes:focus { outline:none; border-style:solid; border-color:var(--accent); }
+  textarea.notes::placeholder { color:var(--muted); }
+  ul.sub li textarea.notes { background:var(--surface); }
+  .toolbar { display:flex; gap:10px; flex-wrap:wrap; margin:0 0 24px; }
+  .toolbar button { font:600 13px/1 system-ui,sans-serif; padding:9px 14px; border-radius:6px; cursor:pointer; background:var(--surface); color:var(--text); border:1px solid var(--line); }
+  .toolbar button:hover { border-color:var(--accent); }
+  .toolbar button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .status { font:13px/32px system-ui,sans-serif; color:var(--muted); }
+  .note { font:13px/1.5 system-ui,sans-serif; color:var(--muted); margin-top:28px; } .note a { color:inherit; }
+  @media print { body { background:#fff; } section { break-inside:avoid; } .toolbar { display:none; } textarea.notes { border:none; padding:0 0 0 10px; resize:none; } }
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+/* ==== FILL THIS OBJECT ONLY. Every string is quoted verbatim from the posting. ==== */
+const POSTING = {
+  company: "Company",
+  reqId: "",                       // e.g. "176041"; "" if none
+  title: "Job Title",
+  meta: "Group · City, ST · Term",  // short facts line; "" to omit
+  summary: "",                      // one verbatim opening sentence; "" to omit
+  sections: [
+    // kind: "candidate" = paragraphs; "ordered" = numbered list; "bullets" = bulleted list
+    // required: true colors the heading in the accent color
+    // item: "text"  or  { text: "Lead-in sentence:", sub: ["sub point", "sub point"] }
+    { title: "Successful candidate", kind: "candidate", required: true, items: ["…"] },
+    { title: "Required qualifications", kind: "ordered", required: true, items: ["…"] },
+    { title: "Preferred qualifications", kind: "bullets", required: false, items: ["…"] },
+    { title: "Responsibilities", kind: "bullets", required: false, items: ["…"] }
+  ],
+  sourceUrl: "",                    // posting URL; "" if pasted
+  retrieved: "Month D, YYYY",
+  sourceNote: ""                    // e.g. which bullets were rejoined or typos fixed; "" if none
+};
+/* ==== END FILL ==== */
+
+/* Notes baked in by "Save page with notes". Leave as {} when building a new page. */
+const SAVED_NOTES = {};  // one line only; becomes {"t":<time>,"notes":{…}} when saved
+
+(function () {
+  // Snapshot of this file as loaded, used to write a copy with notes baked in
+  const SOURCE = "<!doctype html>\n" + document.documentElement.outerHTML;
+  const P = POSTING, app = document.getElementById("app");
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  document.title = (P.title + " Notes").slice(0, 60);
+
+  app.appendChild(el("div", "eyebrow", P.company + (P.reqId ? " · Req. " + P.reqId : "")));
+  app.appendChild(el("h1", null, P.title));
+  if (P.meta) app.appendChild(el("p", "meta", P.meta));
+  if (P.summary) app.appendChild(el("p", "summary", "“" + P.summary + "”"));
+
+  const bar = el("div", "toolbar");
+  const savePage = el("button", "primary", "Save page with notes (.html)"), exp = el("button", null, "Download notes (.txt)"), clr = el("button", null, "Clear all notes"), status = el("span", "status");
+  savePage.type = exp.type = clr.type = "button"; bar.append(savePage, exp, clr, status); app.appendChild(bar);
+
+  const KEY = "jobnotes:" + (P.company + "|" + (P.reqId || P.title)).toLowerCase();
+  // Notes come from whichever is newer: the copy saved inside this file, or this browser's autosave
+  let local = null; try { local = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { local = null; }
+  if (local && !local.notes) local = { t: 0, notes: local };  // older autosave format
+  const baked = SAVED_NOTES.notes ? SAVED_NOTES : { t: 0, notes: {} };
+  let store = Object.assign({}, (local && local.t >= baked.t) ? local.notes : baked.notes);
+  const save = () => { status.textContent = ""; try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), notes: store })); status.textContent = "Notes saved in this browser"; } catch (e) { status.textContent = "Notes can't be saved here; download them before closing"; } };
+  const boxes = []; let n = 0;
+  const addBox = (host, label, section, after) => {
+    const id = "n" + (n++), ta = el("textarea", "notes");
+    ta.placeholder = "Your notes…"; ta.setAttribute("aria-label", "Notes: " + label); ta.value = store[id] || "";
+    ta.addEventListener("input", () => { if (ta.value) store[id] = ta.value; else delete store[id]; save(); });
+    after ? host.after(ta) : host.appendChild(ta);
+    boxes.push({ section, label, ta });
+  };
+
+  P.sections.forEach(s => {
+    if (!s.items || !s.items.length) return;
+    const sec = el("section", s.required ? "required" : null), h = el("h2", null, s.title);
+    if (s.kind !== "candidate") h.appendChild(el("span", "count", String(s.items.length)));
+    sec.appendChild(h);
+    if (s.kind === "candidate") {
+      s.items.forEach(t => { const p = el("p", "pt", t); sec.appendChild(p); addBox(p, t, s.title, true); });
+    } else {
+      const list = el(s.kind === "ordered" ? "ol" : "ul");
+      s.items.forEach(it => {
+        const li = el("li");
+        if (typeof it === "string") { li.textContent = it; addBox(li, it, s.title); }
+        else {
+          li.appendChild(document.createTextNode(it.text));
+          const sub = el("ul", "sub");
+          it.sub.forEach(t => { const sl = el("li", null, t); sub.appendChild(sl); addBox(sl, t, s.title); });
+          li.appendChild(sub);
+        }
+        list.appendChild(li);
+      });
+      sec.appendChild(list);
+    }
+    app.appendChild(sec);
+  });
+
+  const note = el("p", "note");
+  note.append("Wording taken from the ");
+  if (P.sourceUrl) { const a = el("a", null, "official posting"); a.href = P.sourceUrl; note.appendChild(a); } else note.append("posting");
+  note.append(", retrieved " + P.retrieved + "." + (P.sourceNote ? " " + P.sourceNote : ""));
+  app.appendChild(note);
+
+  exp.addEventListener("click", () => {
+    const out = [P.title + " (" + P.company + (P.reqId ? ", Req. " + P.reqId : "") + ")", "Notes exported " + new Date().toLocaleDateString()];
+    let last = "";
+    boxes.forEach(b => {
+      if (b.section !== last) { out.push("", b.section.toUpperCase()); last = b.section; }
+      out.push("- " + b.label, "  Notes: " + (b.ta.value.trim() ? b.ta.value.trim().replace(/\n/g, "\n         ") : "—"));
+    });
+    const a = el("a"); a.href = URL.createObjectURL(new Blob([out.join("\n")], { type: "text/plain" }));
+    a.download = (P.company + "_" + P.title).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") + "_notes.txt";
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+  savePage.addEventListener("click", () => {
+    const json = JSON.stringify({ t: Date.now(), notes: store }).replace(/</g, "\\u003c");
+    const html = SOURCE.replace(/^const SAVED_NOTES = .*$/m, () => "const SAVED_NOTES = " + json + ";");
+    const a = el("a"); a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+    a.download = (P.company + "_" + P.title).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") + "_requirements.html";
+    document.body.appendChild(a); a.click(); a.remove();
+    status.textContent = "Saved a copy with your notes";
+  });
+  clr.addEventListener("click", () => { boxes.forEach(b => b.ta.value = ""); store = {}; save(); });
+})();
+</script>
+</body>
+</html>
