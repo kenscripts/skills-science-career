@@ -31,10 +31,6 @@ mkdir -p ~/.claude/skills
 cp -r skills-science-career/career-job-requirements-html ~/.claude/skills/
 ```
 
-## Requirements
-
-Installing a skill does not install its dependencies. `career-job-requirements-html` needs none to run; a headless browser such as Playwright is optional, for its self-check.
-
 ## Author
 
 Kenneth Acosta
