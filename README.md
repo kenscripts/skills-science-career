@@ -8,6 +8,14 @@ Claude skills for career tasks in science, such as working from job postings.
 |-------|--------------|---------|
 | [`career-job-requirements-html`](career-job-requirements-html/SKILL.md) | Turn a job posting (URL, pasted text, or file) into an interactive HTML page of what it requires of the candidate, in its own wording, with a notes box under every point | 1.00 |
 
+## Usage
+
+Skill name: `career-job-requirements-html`. Example request:
+
+```text
+Run career-job-requirements-html on this job posting: <web link or attached document>
+```
+
 ## Install
 
 Skills run with full agent permissions, so read a skill before using it.
