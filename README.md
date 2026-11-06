@@ -38,7 +38,3 @@ git clone https://github.com/kenscripts/skills-science-career.git
 mkdir -p ~/.claude/skills
 cp -r skills-science-career/career-job-requirements-html ~/.claude/skills/
 ```
-
-## Author
-
-Kenneth Acosta
