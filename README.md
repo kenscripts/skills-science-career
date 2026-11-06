@@ -1,6 +1,6 @@
 # skills-science-career
 
-Claude skills for career tasks in science, such as working from job postings.
+Claude skills for career tasks in science.
 
 ## Skills
 
