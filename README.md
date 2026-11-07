@@ -1,5 +1,7 @@
 # skills-science-career
 
+![Stars](https://img.shields.io/github/stars/kenscripts/skills-science-career) ![Forks](https://img.shields.io/github/forks/kenscripts/skills-science-career) ![Last commit](https://img.shields.io/github/last-commit/kenscripts/skills-science-career) ![Clones](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kenscripts/bc500b179397ff30ba2613d9226d9e75/raw/skills-science-career-clones.json)
+
 Claude skills for career tasks in science.
 
 ## Skills
