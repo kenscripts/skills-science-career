@@ -1,6 +1,6 @@
 # skills-science-career
 
-![Last commit](https://img.shields.io/github/last-commit/kenscripts/skills-science-career) ![Clones](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kenscripts/bc500b179397ff30ba2613d9226d9e75/raw/skills-science-career-clones.json)
+![Last commit](https://img.shields.io/github/last-commit/kenscripts/skills-science-career) ![Clones](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kenscripts/bc500b179397ff30ba2613d9226d9e75/raw/skills-science-career-clones.json) ![Views](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kenscripts/bc500b179397ff30ba2613d9226d9e75/raw/skills-science-career-views.json)
 
 Claude skills for career tasks in science.
 
