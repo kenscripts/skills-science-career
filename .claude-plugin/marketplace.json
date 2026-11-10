@@ -1,0 +1,17 @@
+{
+  "name": "skills-science-career",
+  "owner": {
+    "name": "Kenneth Acosta"
+  },
+  "plugins": [
+    {
+      "name": "career-job-requirements-html",
+      "description": "Turn a job posting into an interactive HTML page of its requirements, with a notes box under every point.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./career-job-requirements-html"
+      ]
+    }
+  ]
+}
